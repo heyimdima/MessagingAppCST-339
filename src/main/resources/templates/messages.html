@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Messages - MessagingApp</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    .message-container {
+      height: calc(100vh - 180px);
+      overflow-y: auto;
+    }
+    .message-bubble {
+      max-width: 75%;
+      margin-bottom: 1rem;
+    }
+    .message-bubble.sent {
+      margin-left: auto;
+    }
+    .friend-list {
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
+    }
+    .friend-item {
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .friend-item:hover {
+      background-color: #f8f9fa;
+    }
+    .friend-item.active {
+      background-color: #e9ecef;
+    }
+    .card-hover:hover {
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+      transition: all 0.3s ease;
+    }
+  </style>
+</head>
+<body class="bg-light">
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand" href="#">MessagingApp</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link active" th:href="@{/messages}">
+            <i class="bi bi-chat-dots"></i> Messages
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/friends}">
+            <i class="bi bi-people-fill"></i> Friends
+          </a>
+        </li>
+      </ul>
+      <form th:action="@{/logout}" method="post" class="d-flex">
+        <button class="btn btn-outline-light" type="submit">
+          <i class="bi bi-box-arrow-right"></i> Logout
+        </button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<div class="container py-4">
+  <div class="row">
+    <!-- Friends List -->
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-header bg-white">
+          <h5 class="mb-0"><i class="bi bi-people-fill me-2"></i>Friends</h5>
+        </div>
+        <div class="card-body p-0">
+          <div class="friend-list">
+            <div th:each="friend : ${friends}"
+                 th:class="'friend-item p-3' + (${friend.id == selectedFriend?.id ? ' active' : ''})"
+                 th:onclick="|window.location.href='@{/messages(friendId=${friend.id})}'|">
+              <div class="d-flex align-items-center">
+                <i class="bi bi-person-circle fs-4 me-2"></i>
+                <div>
+                  <div class="fw-bold" th:text="${friend.displayName != null ? friend.displayName : friend.username}"></div>
+                  <small class="text-muted" th:text="${friend.email}"></small>
+                </div>
+              </div>
+            </div>
+            <div th:if="${#lists.isEmpty(friends)}" class="p-3 text-center text-muted">
+              <i class="bi bi-people fs-1"></i>
+              <p class="mt-2">No friends yet</p>
+              <a th:href="@{/friends}" class="btn btn-sm btn-primary">
+                <i class="bi bi-person-plus"></i> Add Friends
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Messages -->
+    <div class="col-md-8">
+      <div class="card shadow-sm">
+        <div class="card-header bg-white">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-chat-dots me-2"></i>
+            <h5 class="mb-0" th:if="${selectedFriend}">
+              Chat with <span th:text="${selectedFriend.displayName ?: selectedFriend.username}"></span>
+            </h5>
+            <h5 class="mb-0" th:unless="${selectedFriend}">Select a friend to start chatting</h5>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="message-container" th:if="${selectedFriend}">
+            <div th:each="message : ${messages}">
+              <div th:class="${message.senderId == currentUser.id ? 'message-bubble sent' : 'message-bubble received'}">
+                <div th:class="${message.senderId == currentUser.id ? 'alert alert-primary mb-0' : 'alert alert-light border mb-0'}">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <small class="text-muted"
+                           th:text="${message.senderId == currentUser.id ? 'You' : (selectedFriend.displayName ?: selectedFriend.username)}">
+                    </small>
+                    <small class="text-muted"
+                           th:text="${#temporals.format(message.timestamp, 'HH:mm')}">
+                    </small>
+                  </div>
+                  <div th:text="${message.content}"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="text-center p-5" th:unless="${selectedFriend}">
+            <i class="bi bi-chat-dots fs-1 text-muted"></i>
+            <p class="mt-3 text-muted">Select a friend from the list to start chatting</p>
+          </div>
+        </div>
+        <div class="card-footer bg-white" th:if="${selectedFriend}">
+          <form th:action="@{/messages/send}" method="post">
+            <input type="hidden" name="receiverId" th:value="${selectedFriend.id}">
+            <div class="input-group">
+              <input type="text" class="form-control" name="content"
+                     placeholder="Type your message..." required>
+              <button class="btn btn-primary" type="submit">
+                <i class="bi bi-send"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
