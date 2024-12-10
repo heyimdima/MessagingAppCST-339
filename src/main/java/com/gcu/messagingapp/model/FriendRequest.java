@@ -5,7 +5,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 
 /**
- * FriendRequest entity class that represents a friend request between users
+ * FriendRequest entity class representing a friend request between users.
+ * Tracks the status of friendship requests in the system.
+ * 
+ * @author Dima Bondar and Keelia Mattison
+ * @version 1.0
  */
 @Document(collection = "friendRequests")
 public class FriendRequest {
@@ -16,6 +20,9 @@ public class FriendRequest {
     private FriendRequestStatus status;
     private LocalDateTime createdAt;
 
+    /**
+     * Default constructor that initializes timestamp and sets status to PENDING
+     */
     public FriendRequest() {
         this.createdAt = LocalDateTime.now();
         this.status = FriendRequestStatus.PENDING;

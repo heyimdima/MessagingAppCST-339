@@ -11,7 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
- * Controller handling friend-related operations
+ * Controller handling all friend-related operations.
+ * Manages friend requests, friend lists, and friend-related views.
+ * 
+ * @author Dima Bondar and Keelia Mattison
+ * @version 1.0
  */
 @Controller
 @RequestMapping("/friends")
@@ -24,7 +28,11 @@ public class FriendController {
     private UserService userService;
 
     /**
-     * Shows friends page with friend lists and requests
+     * Shows the friends page with friend lists and requests
+     * 
+     * @param user Currently authenticated user
+     * @param model Spring MVC model for view data
+     * @return View name for friends page
      */
     @GetMapping
     public String showFriendsPage(@AuthenticationPrincipal User user, Model model) {

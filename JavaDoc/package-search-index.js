@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.gcu.messagingapp"},{"l":"com.gcu.messagingapp.config"},{"l":"com.gcu.messagingapp.controller"},{"l":"com.gcu.messagingapp.model"},{"l":"com.gcu.messagingapp.repository"},{"l":"com.gcu.messagingapp.service"}];updateSearchResults();

@@ -1,0 +1,6 @@
+com.gcu.messagingapp
+com.gcu.messagingapp.config
+com.gcu.messagingapp.controller
+com.gcu.messagingapp.model
+com.gcu.messagingapp.repository
+com.gcu.messagingapp.service

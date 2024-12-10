@@ -5,6 +5,7 @@ import com.gcu.messagingapp.repository.UserRepository;
 import com.gcu.messagingapp.repository.FriendRequestRepository;
 import com.gcu.messagingapp.model.FriendRequestStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,7 +13,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Service class handling user-related business logic
+ * Service class handling all user-related business logic.
+ * Implements UserDetailsService for Spring Security integration.
+ * Manages user operations including registration, authentication, and friend management.
+ * 
+ * @author Dima Bondar and Keelia Mattison
+ * @version 1.0
  */
 @Service
 public class UserService implements UserDetailsService {
@@ -27,10 +33,14 @@ public class UserService implements UserDetailsService {
     private FriendRequestRepository friendRequestRepository;
 
     /**
-     * Loads user by username for Spring Security authentication
+     * Loads user details by username for Spring Security authentication
+     * 
+     * @param username The username to look up
+     * @return UserDetails object containing user information
+     * @throws UsernameNotFoundException if user not found
      */
     @Override
-    public User loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }

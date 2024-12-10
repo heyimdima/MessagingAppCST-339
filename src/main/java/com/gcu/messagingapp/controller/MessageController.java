@@ -12,7 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
- * Controller handling message-related operations
+ * Controller handling all message-related HTTP requests.
+ * Manages message views, message sending, and message retrieval operations.
+ * 
+ * @author Dima Bondar and Keelia Mattison
+ * @version 1.0
  */
 @Controller
 public class MessageController {
@@ -24,7 +28,12 @@ public class MessageController {
     private FriendService friendService;
 
     /**
-     * Shows messages page with chat interface
+     * Displays the messages page with chat interface
+     * 
+     * @param currentUser The authenticated user
+     * @param friendId Optional ID of friend to show chat with
+     * @param model Spring MVC model
+     * @return View name for messages page
      */
     @GetMapping("/messages")
     public String showMessages(@AuthenticationPrincipal User currentUser,
@@ -53,7 +62,12 @@ public class MessageController {
     }
 
     /**
-     * Handles sending a message
+     * Handles sending a new message between users
+     * @param senderId ID of the sending user
+     * @param receiverId ID of the receiving user
+     * @param content Content of the message
+     * @param redirectAttributes For flash messages
+     * @return Redirect to messages view
      */
     @PostMapping("/messages/send")
     public String sendMessage(@AuthenticationPrincipal User currentUser,

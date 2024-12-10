@@ -11,8 +11,12 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
- * Configuration class for Spring Security settings
- * Handles authentication, authorization, and security settings for the application
+ * Configuration class for Spring Security settings.
+ * Handles authentication, authorization, and security settings for the application.
+ * Configures security filters, login behavior, and password encoding.
+ * 
+ * @author Dima Bondar and Keelia Mattison
+ * @version 1.0
  */
 @Configuration
 @EnableWebSecurity
@@ -20,8 +24,11 @@ public class SecurityConfig {
 
     /**
      * Configures security settings for HTTP requests
+     * Sets up authentication, authorization rules, and login/logout behavior
+     * 
      * @param http HttpSecurity object to configure
      * @return Configured SecurityFilterChain
+     * @throws Exception if configuration fails
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

@@ -4,13 +4,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
- * Controller handling the root URL and basic navigation
+ * Controller handling basic navigation and home page routing.
+ * Manages root URL and login page access.
+ * 
+ * @author Dima Bondar and Keelia Mattison
+ * @version 1.0
  */
 @Controller
 public class HomeController {
 
     /**
-     * Redirects root URL to messages page
+     * Handles root URL request
+     * Redirects to messages page
+     * 
+     * @return Redirect string to messages page
      */
     @GetMapping("/")
     public String home() {
@@ -18,7 +25,9 @@ public class HomeController {
     }
 
     /**
-     * Shows the login page
+     * Displays the login page
+     * 
+     * @return View name for login page
      */
     @GetMapping("/login")
     public String login() {

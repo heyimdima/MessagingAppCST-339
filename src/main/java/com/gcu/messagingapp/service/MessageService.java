@@ -10,7 +10,11 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * Service class handling message-related business logic
+ * Service class handling all message-related business logic.
+ * Manages message creation, retrieval, and validation between users.
+ * 
+ * @author Dima Bondar and Keelia Mattison
+ * @version 1.0
  */
 @Service
 public class MessageService {
@@ -22,8 +26,12 @@ public class MessageService {
     private UserRepository userRepository;
 
     /**
-     * Sends a message between users
-     * Only allows messages between friends
+     * Sends a new message between users
+     * Validates that users are friends before allowing message transmission
+     * 
+     * @param message The message object containing sender, receiver, and content
+     * @return The saved message object
+     * @throws RuntimeException if users are not friends
      */
     public Message sendMessage(Message message) {
         User sender = userRepository.findById(message.getSenderId()).orElseThrow();

@@ -18,7 +18,9 @@ public class UserController {
     private UserService userService;
 
     /**
-     * Shows registration form
+     * Shows the user registration form
+     * @param model Spring MVC model to add attributes to
+     * @return The registration view name
      */
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
